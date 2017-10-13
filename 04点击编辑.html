@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:dom操作、input值-->
+	<title>点击编辑</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		font-family:"Microsoft YaHei";
+		font-size:14px;
+	}
+	body{
+		background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+		min-height:400px;
+	}
+	.wrap_box{
+		width:500px;
+		margin:30px auto;
+		background:#fff;
+		padding:30px;
+		border-radius:5px;
+		box-shadow:0px 0px 10px #5AB1FD;
+	}
+	button{
+		cursor:pointer;
+	}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	h1{
+		margin-bottom:15px;
+	}
+	ul{
+		border-top:1px dotted #000;
+	}
+	li{
+		list-style:none;
+		line-height:30px;
+		border-bottom:1px dotted #000;
+		padding:10px 0;
+	}
+	li span{
+		line-height:32px;
+	}
+	li a{
+		margin-left:20px;
+		color:#5AB1FD;
+		cursor:pointer;
+	}
+	li input{
+		width:320px;
+		line-height:30px;
+		border:1px solid #5AB1FD;
+		margin-right:10px;
+		display:none;
+		padding-left:5px;
+		margin-left:-5px;
+	}
+	li button{
+		width:60px;
+		line-height:30px;
+		margin-left:10px;
+		background:#5AB1FD;
+		border:1px solid #5AB1FD;
+		color:#fff;
+		border-radius:3px;
+		display:none;
+	}
+	.edit_li span, .edit_li a{
+		display:none;
+	}
+	.edit_li input, .edit_li button{
+		display:inline-block;
+	}
+
+	</style>
+</head>
+<body>
+	<div class="wrap_box">
+		<h1>列表编辑</h1>
+		<ul>
+			<li>
+				<span>问：早餐O2O为什么做不起来？</span>
+				<input type="text" class="text">
+				<a>编辑</a>
+				<button class="saveBtn">保存</button>
+				<button class="cancelBtn">取消</button>
+			</li>
+			<li>
+				<span>答：因为消费者起不来，哈哈哈~</span>
+				<input type="text" class="text">
+				<a>编辑</a>
+				<button class="saveBtn">保存</button>
+				<button class="cancelBtn">取消</button>
+			</li>
+		</ul>
+
+	</div>
+
+	<script>
+		//预存需要的dom
+		var aLi = document.getElementsByTagName("li");
+		var aEditBtn = document.getElementsByTagName("a");
+		var aSpan = document.getElementsByTagName("span");
+		var aInput = document.getElementsByClassName("text");
+		var aSaveBtn = document.getElementsByClassName("saveBtn");
+		var aCancelBtn = document.getElementsByClassName("cancelBtn");
+		//console.log(aBtns,aSelect1,aSelect2);
+
+		for(var i=0; i<aEditBtn.length; i++){
+			aEditBtn[i].index = i;  //赋值当前Index值，以便使用
+			aSaveBtn[i].index = i;
+			aCancelBtn[i].index = i;
+			//当点击编辑的时候
+			aEditBtn[i].onclick = function(){
+				aInput[this.index].value = aSpan[this.index].innerText;
+				this.parentNode.className = "edit_li";
+			}
+
+			//当点击保存的时候
+			aSaveBtn[i].onclick = function(){
+				if(aInput[this.index].value == ""){
+					alert("请写点儿什么吧~");
+					return false;
+				}
+				aSpan[this.index].innerText = aInput[this.index].value;
+				this.parentNode.className = "";
+
+			}
+
+			//当点击取消的时候
+			aCancelBtn[i].onclick = function(){
+				this.parentNode.className = "";
+			}
+
+		}
+
+	</script>
+</body></html>

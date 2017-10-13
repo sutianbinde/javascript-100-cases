@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:节点查找-->
+	<title>展开收起</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+			font-family:"Microsoft YaHei";
+		}
+		body{
+			background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+			min-height:400px;
+			font-size:14px;
+		}
+		.content{
+			width:500px;
+			margin:50px auto;
+			padding: 20px;
+			border-radius: 10px;
+			background: #fff;
+			box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
+		}
+
+		.item{
+			background: #e4f6fd;
+			color: #28a8ea;
+			list-style: none;
+			padding: 10px 15px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+		}
+		.item a{
+			float: right;
+			border: 1px solid #28a8ea;
+			border-radius: 3px;
+			cursor: pointer;
+			margin-top: -4px;
+			font-size: 26px;
+			line-height: 24px;
+			width: 26px;
+			height: 26px;
+			text-align: center;
+		}
+		.item a:hover{
+			background: #28a8ea;
+			color: #fff;
+		}
+		p{
+			padding: 5px 10px 20px 10px;
+			display: none;
+			line-height: 24px;
+			text-align: justify;
+		}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+	<div class="content">
+		<div class="item"><a>+</a><span>Collapse item #1</span></div>
+		<p>Pumas are large, cat-like animals which are found in America. When reports came into London Zoo that a wild puma had been spotted forty-five miles south of London</p>
+		<div class="item"><a>+</a><span>Collapse item #2</span></div>
+		<p>they were not taken seriously. However, as the evidence began to accumulate, experts from the Zoo felt obliged to investigate, for the descriptions given by people who claimed to have seen the puma were extraordinarily similar.</p>
+		<div class="item"><a class="launch">-</a><span>Collapse item #3</span></div>
+		<p style="display: block"> The hunt for the puma began in a small village where a woman picking blackberries saw 'a large cat' only five yards away from her. It immediately ran away when she saw it, and experts confirmed that a puma will not attack a human being unless it is cornered. </p>
+	</div>
+	<script>
+
+		//预存dom
+		var aBtn = document.getElementsByTagName("a");
+		var aContent = document.getElementsByTagName("p");
+
+		//展开收起
+		for(var i=0; i<aBtn.length; i++){
+
+			aBtn[i].onclick = function(){
+				if(this.className == "launch"){ //表示已经展开
+					this.parentNode.nextElementSibling.style.display = "none";
+					this.className = "";
+					this.innerHTML = "+";
+				}else{
+					this.parentNode.nextElementSibling.style.display = "block";
+					this.className = "launch";
+					this.innerHTML = "-";
+				}
+
+			}
+		}
+
+	</script>
+</body></html>

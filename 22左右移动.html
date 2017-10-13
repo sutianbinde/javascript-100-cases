@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:dom操作 -->
+	<title>左右移动</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		font-family:"Microsoft YaHei";
+	}
+	body{
+		background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+		min-height:400px;
+	}
+	.wrap_box{
+		width:700px;
+		overflow: hidden;
+		margin: 20px auto;
+		background: #5AB1FD;
+		border-radius: 5px;
+		padding: 10px;
+		font-size: 14px;
+	}
+	.wrap_box > *{
+		float: left;
+		margin: 10px;
+
+	}
+	.left, .right{
+		height: 403px;
+		width: 240px;
+		border-radius: 5px;
+		resize: none;
+		background: #fff;
+		border: 2px solid #2d88d7;
+		padding: 7px;
+		line-height: 30px;
+	}
+	.btn{
+		background: #2d88d7;
+		border-radius: 5px;
+		padding: 10px 20px;
+		color: #fff;
+		text-align: center;
+		margin-top: 20px;
+		cursor: pointer;
+	}
+	.btn:hover{
+		background: #227ac7;
+	}
+	.btn span{
+		font-size: 30px;
+		line-height: 30px;
+	}
+	ul li{
+		list-style: none;
+		padding: 5px 20px;
+		border-radius: 5px;
+		cursor: pointer;
+		border-bottom: 1px solid #fff;
+	}
+	li:nth-child(odd){
+		background:#e6f1f7;
+	}
+	ul .active{
+		background:#5AB1FD;
+		color:#fff;
+	}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+<div class="wrap_box">
+	<ul class="left">
+		<li>javascript</li>
+		<li>css</li>
+		<li>html</li>
+		<li>Less</li>
+		<li>Sass</li>
+	</ul>
+	<div class="middle">
+		<div class="btn" from="left" to="right">
+			<span>→</span>
+			<p>go right</p>
+		</div>
+		<div class="btn" from="right" to="left">
+			<span>←</span>
+			<p>go left</p>
+		</div>
+	</div>
+	<ul class="right">
+		<li>php</li>
+		<li>java</li>
+		<li>node</li>
+		<li>C#</li>
+		<li>.Net</li>
+	</ul>
+</div>
+<script>
+	//预存需要的dom
+	var aBtn = document.getElementsByClassName("btn");
+	var aLi = document.getElementsByTagName("li");
+
+	//点击选中
+	for(var i=0; i<aLi.length; i++){
+		aLi[i].onclick = function(){
+			this.className = this.className?"":"active";
+		}
+	}
+	//点击移动按钮
+	for(var i=0; i<aBtn.length; i++){
+		aBtn[i].onclick = function(){
+			var toDom = document.getElementsByClassName( this.getAttribute("to") )[0];
+			var fromDom = document.getElementsByClassName( this.getAttribute("from") )[0];
+			var aDom = fromDom.getElementsByClassName("active");
+			//由于htmlclection是动态引用，当dom发生改变的时候，dom集就会发生改变，所以需要先将dom另存起来。然后再使用。
+			var cloneDom = [];
+			for(var j=0; j<aDom.length; j++){
+				cloneDom.push( aDom[j] );
+			}
+
+			//移动节点（这是用使用另存为的dom，那么当dom别移动的时候，cloneDom是不会变的，只是引用的dom对象发生了移动）
+			for(var j= 0, len=cloneDom.length ; j<len; j++){
+				cloneDom[j].className = "";
+				toDom.appendChild( cloneDom[j] );
+			}
+
+
+
+		}
+	}
+	
+</script>
+</body></html>

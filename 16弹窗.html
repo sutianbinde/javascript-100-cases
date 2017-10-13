@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:拖拽，定位居中-->
+	<title>弹窗（可拖动）</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		font-family:"Microsoft YaHei";
+	}
+	body{
+		background:url("img/bg01.jpg") no-repeat;
+		background-size: 100%;
+		min-height:400px;
+	}
+	button{
+		background:#3498db;
+		color:#fff;
+		font-size:14px;
+		text-align:center;
+		width:120px;
+		line-height:34px;
+		border:none 0;
+		cursor:pointer;
+		margin:20px;
+		border-radius: 34px;
+		position: absolute;
+		left: 45%;
+		top: 30%;
+		outline: none; /*去除点击获取焦点的效果*/
+	}
+	.win_wrap{
+		position:absolute;
+		left:50%;
+		top:50%;
+		width:500px;
+		height:300px;
+		margin-left:-250px;
+		margin-top:-150px;
+		border:1px solid #3498db;
+		background: #fff;
+		border-radius: 3px;
+		display: none;
+	}
+	.title{
+		height:34px;
+		line-height:34px;
+		padding:0 3px 0 10px;
+		background:#5AB1FD;
+		color:#fff;
+	}
+	.title a{
+		float:right;
+		cursor:pointer;
+	}
+	.title h2{
+		font-size:14px;
+	}
+	.content{
+		padding:10px;
+	}
+	.content span{
+		float: right;
+		margin: 100px 50px 0 0;
+	}
+	.content img{
+		margin-left: 10px;
+	}
+	#close{
+		font-size: 20px;
+	}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+	<button id="myBtn">点击登录</button>
+
+	<div class="win_wrap" id="win">
+		<div class="title" id="winTitle"><a id="close">&times;</a><h2>登录</h2></div>
+		<div class="content">
+			<img src="img/erweima.png" alt=""/>
+			<span>使用手机扫描二维码</span>
+		</div>
+	</div>
+	<script>
+
+		//预存需要的dom
+		var oBtn = document.getElementById("myBtn");
+		var oWin = document.getElementById("win");
+		var oTitle = document.getElementById("winTitle");
+		var oClose = document.getElementById("close");
+		//拖拽
+		oTitle.onmousedown = function(ev){
+			var ev = ev || window.event;
+			var disX = ev.clientX - oWin.offsetLeft;
+			var disY = ev.clientY - oWin.offsetTop;
+			oWin.style.cursor = "all-scroll";
+			document.onmousemove = function (ev){
+
+				var ev = ev || window.event;
+				oWin.style.left = (ev.clientX - disX + 250) + 'px';
+				oWin.style.top = (ev.clientY - disY +150) + 'px';
+			};
+
+			document.onmouseup = function (){
+				oWin.style.cursor = "default";
+				document.onmousemove = null;
+				document.onmouseup = null;
+			};
+			return false;
+		}
+
+		//关闭弹窗
+		oClose.onclick = function(){
+			oWin.style.display = "none";
+		}
+		//打开弹窗
+		oBtn.onclick = function(){
+			oWin.removeAttribute("style");
+			oWin.style.display = "block";
+		}
+
+	</script>
+</body></html>

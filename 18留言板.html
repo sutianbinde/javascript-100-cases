@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:日期，dom操作-->
+	<title>留言板</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		font-family:"Microsoft YaHei";
+	}
+	body{
+		background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+		min-height:400px;
+	}
+	.content{
+		width:600px;
+		margin:50px auto;
+	}
+	.title{
+		font-size:18px;
+		font-weight:bold;
+		text-align:center;
+		margin-bottom:30px;
+	}
+	input{
+		border:1px solid #a9a9a9;
+		height:32px;
+		line-height:34px;
+		width:480px;
+		padding-left:5px;
+		float:left;
+		margin-right:10px
+	}
+	button{
+		background:#3498db;
+		color:#fff;
+		font-size:14px;
+		text-align:center;
+		width:100px;
+		line-height:34px;
+		border:none 0;
+		cursor:pointer;
+		float:left;
+	}
+	.message_box{
+		border:1px solid #a9a9a9;
+		background:#f0f0f0;
+		min-height:200px;
+		padding-bottom:20px;
+	}
+	.time{
+		padding:20px 0 0 50px;
+		font-size:12px;
+	}
+	.message_content{
+		padding:5px 0 10px 5px;
+		font-size:16px;
+		position: relative;
+	}
+	.message_content img{
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		position: absolute;
+		left: 5px;
+		top: 5px;
+	}
+	.message_content span{
+		background: #fff;
+		border-radius: 5px;
+		padding: 5px 10px 5px 10px;
+		margin-left: 39px;
+		display: inline-block;
+		margin-right: 10px;
+	}
+	.message_content:before{
+		content: "";
+		position: absolute;
+		border: 7px solid transparent;
+		border-right: 7px solid #fff;
+		left: 31px;
+		top: 13px;
+	}
+	.users{
+		margin: 10px 0 20px 0;
+	}
+	.users img{
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		margin: 0 10px;
+		cursor: pointer;
+		border:2px solid rgba(255,255,255,0.5);
+	}
+	.users .now{
+		border:2px solid #3498db;
+	}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+	<div class="content">
+		<div class="title">用户留言</div>
+		<div style="overflow: hidden"><input id="myInput" type="text" placeholder="请输入留言类容"><button id="doPost">提交</button></div>
+		<div class="users"><img class="now" src="img/timg01.jpg" alt=""/><img src="img/timg02.jpg" alt=""/></div>
+		<div class="message_box" id="messageBox">
+			<!--<div class="time">2017/3/6 下午9:41:59</div><div class="message_content"><img src="img/timg01.jpg" alt=""/><span>司法局考试的</span></div>-->
+		</div>
+	</div>
+<script>
+
+	var oMessageBox = document.getElementById("messageBox");
+	var oInput = document.getElementById("myInput");
+	var oPostBtn = document.getElementById("doPost");
+	var aUser = document.getElementsByClassName("users")[0].getElementsByTagName("img");
+
+	var userSrc =aUser[0].src;
+	for(var i=0; i<aUser.length; i++){
+		aUser[i].onclick = function(){
+			userSrc = this.src;
+			aUser[0].className = "";
+			aUser[1].className = "";
+			this.className = "now";
+		}
+	}
+
+	oPostBtn.onclick = function(){
+		if(oInput.value){
+
+
+			//写入留言内容
+			var oMessageContent = document.createElement("div");
+			oMessageContent.className = "message_content";
+			oMessageContent.innerHTML = '<img src="'+ userSrc +'" alt=""/><span>'+oInput.value+'</span>';
+			oInput.value = "";
+			oMessageBox.insertBefore(oMessageContent,oMessageBox.childNodes[0]);
+
+			//写入发表留言的时间
+			var oTime = document.createElement("div");
+			oTime.className = "time";
+			var myDate = new  Date();
+			oTime.innerHTML = myDate.toLocaleString();
+			oMessageBox.insertBefore(oTime,oMessageBox.childNodes[0]);
+
+		}
+
+	}
+	
+</script>
+</body></html>

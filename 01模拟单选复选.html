@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:tab切换、循环、判断-->
+	<title>单选/复选</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+			font-family:"Microsoft YaHei";
+		}
+		body{
+			background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+			min-height:400px;
+		}
+		.wrap_box{
+			width:500px;
+			margin:30px auto;
+			background:#fff;
+			padding:30px;
+			border-radius:5px;
+			box-shadow:0 0 10px #5AB1FD;
+		}
+		button{
+			cursor:pointer;
+		}
+		button{
+			background:#fff;
+			line-height:32px;
+			border:2px solid #5AB1FD;
+			/*width:80px;*/
+			padding:0 25px;
+			font-size:14px;
+			color:#5AB1FD;
+			outline:none 0;
+		}
+		.btns .active{
+			line-height:32x;
+			border:2px solid #DE4965;
+		}
+		.selects{
+			padding:40px 0 0 0;
+		}
+		.selects button{
+			margin-right:10px;
+			position:relative;
+			border:2px solid #D7D7D7;
+			color:#000;
+		}
+		.selects .active{
+			border:2px solid #5AB1FD;
+			color:#5AB1FD;
+		}
+		.selects2{
+			display:none;
+		}
+		/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+		.selects1 .active:after{
+			content:"√";
+			color:#fff;
+			line-height:20px;
+			height:20px;
+			width:20px;
+			border-radius:50%;
+			background:#5AB1FD;
+			position:absolute;
+			right:-5px;
+			top:-5px;
+		}
+
+		.selects2 .active:after{
+			content:"√";
+			color:#fff;
+			line-height:20px;
+			height:15px;
+			width:15px;
+			background:linear-gradient(to right bottom,#fff 0%, #fff 50%, #5AB1FD 50%, #5AB1FD 100%) no-repeat;
+			position:absolute;
+			right:0px;
+			bottom:0px;
+			padding:2px 0 0 8px;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap_box">
+
+		<div class="btns">
+			<button class="active">单选</button>
+			<button>多选</button>
+		</div>
+
+		<div class="selects selects1">
+			<button class="active">男</button>
+			<button>女</button>
+			<button>保密</button>
+		</div>
+
+		<div class="selects selects2">
+			<button class="active">吃货</button>
+			<button>呆萌</button>
+			<button>蛇精病</button>
+			<button>逗逼</button>
+		</div>
+
+	</div>
+	<script>
+		//预存需要的dom
+		var aBtns = document.getElementsByClassName("btns")[0].getElementsByTagName("button");
+		var aSelects = document.getElementsByClassName("selects");
+		var aSelect1 = aSelects[0].getElementsByTagName("button");
+		var aSelect2 = aSelects[1].getElementsByTagName("button");
+		//console.log(aBtns,aSelect1,aSelect2);
+
+		//点击切换单选复选
+		for(var i=0; i<aBtns.length; i++){
+			aBtns[i].index = i;
+			aBtns[i].onclick = function(){
+
+				//先清空所有的类和当先显示项
+				for(var j=0; j<aBtns.length; j++){
+					aBtns[j].className = "";
+					aSelects[j].style.display = "none";
+				}
+
+				//设置当前项的类名，并设置显示的当前模块
+				aSelects[this.index].style.display = "block";
+				this.className = "active";
+			}
+		}
+
+		//点击多选
+		for(var i=0; i<aSelect2.length; i++){
+			aSelect2[i].index = i;
+			aSelect2[i].onclick = function(){
+				//判断是否有class，如果有，则清空，如果没有，则添加active
+				this.className = this.className?"":"active";
+
+			}
+		}
+
+		//点击单选
+		for(var i=0; i<aSelect1.length; i++){
+			aSelect1[i].index = i;
+			aSelect1[i].onclick = function(){
+				//先清空所有的类
+				for(var i=0; i<aSelect1.length; i++){
+					aSelect1[i].className = "";
+				}
+				//设置当前项的类名
+				this.className = "active";
+
+			}
+		}
+
+	</script>
+</body></html>

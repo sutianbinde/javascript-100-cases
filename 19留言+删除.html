@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:事件委托-->
+	<title>留言板2</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+			font-family:"Microsoft YaHei";
+		}
+		body{
+			background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+			min-height:400px;
+			font-size:14px;
+		}
+		.content{
+			width:500px;
+			margin:50px auto;
+			padding: 20px;
+			border-radius: 10px;
+			background: #fff;
+			box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
+		}
+		textarea{
+			min-height:120px;
+			line-height:34px;
+			width:480px;
+			background: #e4f6fd;
+			border: none 0;
+			resize: none;
+			padding: 5px 10px;
+			border-radius: 5px;
+			color: #1495da;
+		}
+		button{
+			background:#3498db;
+			color:#fff;
+			text-align:center;
+			width:500px;
+			line-height:44px;
+			border:none 0;
+			cursor:pointer;
+			margin: 20px 0;
+			border-radius: 7px;
+			outline: none;
+		}
+		.message_box{
+			min-height:200px;
+		}
+		.item{
+			background: #e4f6fd;
+			color: #28a8ea;
+			list-style: none;
+			padding: 10px 15px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+		}
+		.item a{
+			float: right;
+			border: 1px solid #28a8ea;
+			border-radius: 5px;
+			padding: 3px 10px;
+			cursor: pointer;
+			margin-top: -4px;
+		}
+		.item a:hover{
+			background: #28a8ea;
+			color: #fff;
+		}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+	<div class="content">
+		<div>
+			<textarea id="myInput" placeholder="请输入留言类容"></textarea>
+			<button id="doPost">提交</button>
+		</div>
+		<ul class="message_box" id="messageBox">
+			<li class="item"><a>删除</a><span>今天是个好日子</span></li>
+			<li class="item"><a>删除</a><span>心想的事儿都能成</span></li>
+			<li class="item"><a>删除</a><span>哈哈哈，想得美~</span></li>
+		</ul>
+	</div>
+	<script>
+
+		var oMessageBox = document.getElementById("messageBox");
+		var oInput = document.getElementById("myInput");
+		var oPostBtn = document.getElementById("doPost");
+
+		//提交留言
+		oPostBtn.onclick = function(){
+			if(oInput.value){
+				//写入留言内容
+				var oMessageContent = document.createElement("li");
+				oMessageContent.className = "item";
+				oMessageContent.innerHTML = '<a>删除</a><span>'+oInput.value+'</span>';
+				oInput.value = "";
+				oMessageBox.insertBefore(oMessageContent,oMessageBox.childNodes[0]);
+			}
+		};
+
+		//删除留言（因为删除按钮是后来添加的，所以这里使用事件委托的方式将点击绑定到已经存在的页面dom上）
+		//事件委托的好处：1、后加入dom也能实现事件，2、减少事件绑定
+		oMessageBox.onclick = function(e){
+			//判断是否点的a标签
+			if( e.target.tagName.toLowerCase() == "a" ){
+				oMessageBox.removeChild(e.target.parentNode);
+			}
+		}
+
+
+	</script>
+</body></html>

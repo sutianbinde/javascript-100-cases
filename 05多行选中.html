@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:dom操作、选择、三目运算-->
+	<title>多行选中</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		font-family:"Microsoft YaHei";
+		font-size:14px;
+	}
+	body{
+		background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+		min-height:400px;
+	}
+	.wrap_box{
+		width:500px;
+		margin:30px auto;
+		background:#fff;
+		padding:20px 0 0 0;
+		border-radius:5px;
+		box-shadow:0px 0px 10px #5AB1FD;
+	}
+	button{
+		cursor:pointer;
+	}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	h1{
+		margin-bottom:15px;
+		padding-left:20px;
+	}
+	ul{
+	}
+	li{
+		list-style:none;
+		line-height:30px;
+		padding:10px 20px;
+		overflow:hidden;
+		cursor:pointer;
+	}
+	li *{
+		float:left;
+	}
+	li:nth-child(odd){
+		background:#e6f1f7;
+	}
+	li:hover{
+		background:#5AB1FD;
+		color:#fff;
+	}
+	li span{
+		width:300px;
+	}
+	li a{
+		margin-left:20px;
+	}
+	li i{
+		margin:7px 5px 0 0;
+	}
+
+	#checkAll{
+		float:right;
+		margin-right:20px;
+		cursor:pointer;
+	}
+	#checkAll *{
+		float:left;
+	}
+	#checkAll i{
+		margin:2px 5px;
+	}
+	.wrap_box i{
+		height:14px;
+		width:14px;
+		border:1px solid #d0d9de;
+	}
+	.checked i{
+		background:url('img/checkbox_bg.png') #5AB1FD;
+	}
+	li.checked{
+		background:#5AB1FD;
+		color:#fff;
+	}
+
+	</style>
+</head>
+<body>
+	<div class="wrap_box">
+		<div id="checkAll" class=""><i></i><span>全选</span></div>
+		<h1>列表选择</h1>
+		<ul>
+			<li>
+				<i></i>
+				<span>光辉岁月</span>
+				<a>beyond</a>
+			</li>
+			<li>
+				<i></i>
+				<span>演员</span>
+				<a>薛之谦</a>
+			</li>
+			<li>
+				<i></i>
+				<span>小幸运</span>
+				<a>田馥甄</a>
+			</li>
+			<li>
+				<i></i>
+				<span>十年</span>
+				<a>陈奕迅</a>
+			</li>
+			<li>
+				<i></i>
+				<span>董小姐</span>
+				<a>宋冬野</a>
+			</li>
+		</ul>
+
+	</div>
+	<script>
+		//预存需要的dom
+		var aLi = document.getElementsByTagName("li");
+		var allBtn = document.getElementById("checkAll");
+
+		for(var i=0; i<aLi.length; i++){
+			//当点击选择的时候
+			aLi[i].onclick = function(){
+				this.className = this.className?"":"checked";
+
+				//循环遍历，如果已经全选，则勾选全选框
+				var ifAll = true;
+				for(var j=0; j<aLi.length; j++){
+					if(aLi[j].className == ""){
+						var ifAll = false;
+					}
+				}
+				allBtn.className = ifAll?"checked":"";
+
+			}
+		}
+
+		//当点击全选的时候
+		allBtn.onclick = function(){
+			//先改变自己的class
+			this.className = this.className?"":"checked";
+
+			//然后根据全选状态去修改选中项
+			for(var i=0; i<aLi.length; i++){
+				aLi[i].className = this.className?"checked":"";
+			}
+
+		}
+
+	</script>
+</body></html>

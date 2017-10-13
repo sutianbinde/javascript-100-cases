@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- by su tian tian 知识点:判断最大值、parseInt parseFloat -->
+	<title>价格计算</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+			font-size:16px;
+			line-height:30px;
+		}
+		body{
+			background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+			min-height:400px;
+			color:#fff;
+		}
+		button{
+			background:#000;
+			line-height:32px;
+			border:2px solid #A0A0A0;
+			width:80px;
+			font-size:14px;
+			color:#fff;
+			outline:none 0;
+			cursor:pointer;
+			float:right;
+			margin:25px 44px 0 0;
+		}
+		h1{
+			padding:30px 30px 0;
+		}
+		.big_box{
+			width:500px;
+			margin:30px auto;
+			background:#292B2A;
+			border-radius:5px;
+			box-shadow:0px 0px 10px #5AB1FD;
+		}
+		ul{
+			margin:10px 0 0 0;
+			padding:10px 30px 30px;
+		}
+		li{
+			list-style:none;
+			overflow:hidden;
+			padding:10px 0;
+		}
+		li *{
+			float:left;
+		}
+		li a{
+			width:40px;
+			height:30px;
+			border:1px solid #A0A0A0;
+			text-align:center;
+			font-size:20px;
+			margin-right:10px;
+			border-radius:3px;
+		}
+		.dominus, .doadd{
+			cursor:pointer;
+			user-select:none;
+			-webkit-user-select:none;
+			-moz-user-select:none;
+		}
+		.val{
+			background:#fff;
+			color:#000;
+		}
+		li span{
+			background:#171717;
+			border-radius:3px;
+			padding:3px 10px;
+			width:240px;
+			margin-left:10px;
+			color:#909090;
+		}
+		.count{
+			background:#1F1F1F;
+			padding:20px 30px;
+			border-radius:5px;
+		}
+		.count a{
+			display:inline-block;
+			height:30px;
+			border:1px solid #A0A0A0;
+			margin-right:5px;
+			border-radius:3px;
+			padding:0 15px;
+			background:#fff;
+			color:#000;
+		}
+	</style>
+
+</head>
+<body>
+	<div class="big_box">
+		<button>清空购物车</button>
+		<h1>价格计算</h1>
+		<ul>
+			<li>
+				<a class="dominus">-</a>
+				<a class="val">0</a>
+				<a class="doadd">+</a>
+				<span>单价：10.5元 小计：0元</span>
+			</li>
+			<li>
+				<a class="dominus">-</a>
+				<a class="val">0</a>
+				<a class="doadd">+</a>
+				<span>单价：8.5元 小计：0元</span>
+			</li>
+			<li>
+				<a class="dominus">-</a>
+				<a class="val">0</a>
+				<a class="doadd">+</a>
+				<span>单价：17.5元 小计：0元</span>
+			</li>
+			<li>
+				<a class="dominus">-</a>
+				<a class="val">0</a>
+				<a class="doadd">+</a>
+				<span>单价：6元 小计：0元</span>
+			</li>
+			<li>
+				<a class="dominus">-</a>
+				<a class="val">0</a>
+				<a class="doadd">+</a>
+				<span>单价：2.5元 小计：0元</span>
+			</li>
+		</ul>
+		<div class="count">
+			<div>
+				商品共合计：
+				<a class="count_nomber">0</a>件
+				共花费了：
+				<a class="count_money">0</a>元
+			</div>
+			<div>
+				其中最贵的商品单价是：
+				<a class="high_price">0</a>元
+			</div>
+		</div>
+	</div>
+	<script>
+		//获取需要的dom
+		var oUl = document.getElementsByTagName("ul")[0];
+		var aMinus = oUl.getElementsByClassName("dominus");
+		var aAdd = oUl.getElementsByClassName("doadd");
+		var aVal = oUl.getElementsByClassName("val");
+		var aSpan = oUl.getElementsByTagName("span");
+
+		//总计的dom
+		var allNomberDiv = document.getElementsByClassName("count_nomber")[0];
+		var allPriceDiv = document.getElementsByClassName("count_money")[0];
+		var highPriceDiv = document.getElementsByClassName("high_price")[0];
+
+		//清空购物车dom
+		var clearBtn = document.getElementsByTagName("button")[0];
+
+		//预存数据
+		var priceArr = [10.5, 8.5, 17.5, 6, 2.5];
+
+		for(var i=0; i<aMinus.length; i++){
+			//给需要点击的按钮手动赋值编号
+			aMinus[i].index = i;
+			aAdd[i].index = i;
+
+			//点击减少
+			aMinus[i].onclick = function(){
+				var index = this.index;
+				var val = aVal[index].innerText;
+				if(val == 0){
+					return false;
+				}
+				aVal[index].innerText = --val;
+				aSpan[index].innerText = "单价："+ priceArr[index] +"元 小计："+ priceArr[index]*val +"元";
+				//调用合计函数
+				changeAll();
+			}
+
+			//点击增加
+			aAdd[i].onclick = function(){
+				var index = this.index;
+				var val = aVal[index].innerText;
+				aVal[index].innerText = ++val;
+				aSpan[index].innerText = "单价："+ priceArr[index] +"元 小计："+ priceArr[index]*val +"元";
+				//调用合计函数
+				changeAll();
+			}
+
+		}
+
+		//统计总量的合计函数
+		function changeAll(){
+			var allNomber = 0;
+			var allPrice = 0;
+			var highVal = 0;
+			for(var i=0; i<aVal.length; i++){
+				allNomber += parseInt(aVal[i].innerText);
+				allPrice += parseInt(aVal[i].innerText)*priceArr[i];
+				if(aVal[i].innerText != 0 && priceArr[i]>highVal){
+					highVal = priceArr[i];
+				}
+			}
+			allNomberDiv.innerText = allNomber;
+			allPriceDiv.innerText = allPrice;
+			highPriceDiv.innerText = highVal;
+		}
+
+		//点击清空购物车
+		clearBtn.onclick = function(){
+			for(var i=0; i<aVal.length; i++){
+				aVal[i].innerText = 0;
+				aSpan[i].innerText = "单价："+ priceArr[i] +"元 小计：0元";
+				//调用合计函数
+				allNomberDiv.innerText = 0;
+				allPriceDiv.innerText = 0;
+				highPriceDiv.innerText = 0;
+			}
+
+		}
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:index的赋值与获取-->
+	<title>导航</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		ul li{
+			list-style:none;
+		}
+		.nav_wrap, .content_wrap{
+			width:480px;
+			margin:50px auto;
+		}
+		.nav_piece{
+			float:left;
+			position:relative;
+		}
+		.nav_piece h1{
+			background:#f0f0f0;
+			font-size:14px;
+			text-align:center;
+			width:120px;
+			line-height:45px;
+			position:relative;
+			cursor:pointer;
+		}
+		.nav_piece h1:hover{
+			background:#dddddd;
+		}
+		.nav_piece h1.now{
+			background:#3498db;
+			color:#fff;
+		}
+		.content_piece{
+			display: none;
+		}
+	</style>
+
+<script>
+
+	window.onload = function(){
+
+		//导航效果
+		var aNav = document.getElementsByClassName("nav_wrap")[0].getElementsByTagName("h1");
+		var aContent = document.getElementsByClassName("content_piece");
+
+		for(var i=0; i<aNav.length; i++){
+			aNav[i].index = i;
+			aNav[i].onclick = function(){
+				//去除当前选中项
+				for(var j=0; j<aNav.length; j++){
+					console.log(aContent[j])
+					aContent[j].style.display = "none";
+					aNav[j].className = "";
+				}
+				this.className = "now";
+				aContent[ this.index ].style.display = "block";
+
+			}
+		}
+
+
+	}
+
+</script>
+
+</head>
+
+<body>
+    <div class="nav_wrap">
+    	<div class="nav_piece">
+        	<h1 class="now">美景</h1>
+        </div>
+        <div class="nav_piece">
+        	<h1>美景</h1>
+        </div>
+        <div class="nav_piece">
+        	<h1>美景</h1>
+        </div>
+        <div class="nav_piece">
+        	<h1>美景</h1>
+        </div>
+    </div>
+	<div class="content_wrap">
+		<div class="content_piece" style="display: block"><img src="img/0.jpg"></div>
+		<div class="content_piece"><img src="img/1.jpg"></div>
+		<div class="content_piece"><img src="img/2.jpg"></div>
+		<div class="content_piece"><img src="img/3.jpg"></div>
+	</div>
+    
+</body>
+</html>

@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:循环、dom操作-->
+	<title>上下移动</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+			font-family:"Microsoft YaHei";
+		}
+		body{
+			background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+			min-height:400px;
+			font-size:14px;
+		}
+		.content{
+			width:500px;
+			margin:50px auto;
+			padding: 20px;
+			border-radius: 10px;
+			background: #fff;
+			box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
+			position: relative;
+		}
+
+		.item{
+			background: #e4f6fd;
+			color: #28a8ea;
+			list-style: none;
+			padding: 10px 0 10px 15px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+			height: 26px;
+			line-height: 26px;
+			transition: top 0.5s;
+		}
+		.item a{
+			float: right;
+			border: 1px solid #28a8ea;
+			border-radius: 3px;
+			cursor: pointer;
+			font-size: 14px;
+			line-height: 24px;
+			width: 44px;
+			height: 24px;
+			text-align: center;
+			margin-right: 10px;
+		}
+		.item a:hover{
+			background: #28a8ea;
+			color: #fff;
+		}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+	<div class="content">
+		<div class="item" nowIndex="0"><a class="down">下移</a><a class="up">上移</a><span>item #1</span></div>
+		<div class="item" nowIndex="1"><a class="down">下移</a><a class="up">上移</a><span>item #2</span></div>
+		<div class="item" nowIndex="2"><a class="down">下移</a><a class="up">上移</a><span>item #3</span></div>
+		<div class="item" nowIndex="3"><a class="down">下移</a><a class="up">上移</a><span>item #4</span></div>
+		<div class="item" nowIndex="4"><a class="down">下移</a><a class="up">上移</a><span>item #5</span></div>
+	</div>
+	<script>
+
+		//预存dom
+		var aDownBtn = document.getElementsByClassName("down");
+		var aUpBtn = document.getElementsByClassName("up");
+		var aItems = document.getElementsByClassName("item");
+		var oContent = document.getElementsByClassName("content")[0];
+		var positionArr = [];
+
+		//设置content高度
+		oContent.style.height = oContent.offsetHeight - 40 + "px";
+
+		//先预存item定位位置
+		for(var i=0; i<aItems.length; i++){
+			var obj = {};
+			obj.left = aItems[i].offsetLeft;
+			obj.top = aItems[i].offsetTop;
+			positionArr.push(obj);
+		}
+
+		//循环生成定位
+		for(var i=0; i<aItems.length; i++){
+			aItems[i].style.position = "absolute";
+			aItems[i].style.left = positionArr[i].left + "px";
+			aItems[i].style.top = positionArr[i].top + "px";
+			aItems[i].style.width = "490px";
+
+			aItems[i].index = aUpBtn[i].index = aDownBtn[i].index = i;
+			aItems[i].orgindex = aUpBtn[i].orgindex = aDownBtn[i].orgindex = i;
+			//绑定点击事件
+			//上移
+			aUpBtn[i].onclick = function(){
+				var preIndex = this.index;
+				if(preIndex == 0){ //如果遇到点击这里最顶部的
+					for(var j=0; j<aItems.length; j++){ //将每一个挨着网上推进
+						aItems[j].index = aUpBtn[aItems[j].orgindex].index = aDownBtn[aItems[j].orgindex].index = aItems[j].index-1;
+					}
+					//将当前项放到最后去
+					aItems[this.orgindex].index = aDownBtn[this.orgindex].index = this.index =  aItems.length-1;
+				}else{
+					for(var j=0; j<aItems.length; j++){
+						if(aItems[j].index == preIndex-1){//找到前一项然后设置它的坐标index
+							aItems[j].index = aUpBtn[j].index = aDownBtn[j].index = preIndex;
+						}
+					}
+					//将当前位置坐标Index向上移一个位置
+					aItems[this.orgindex].index = aDownBtn[this.orgindex].index = this.index =  preIndex-1;
+				}
+				doMove();
+			};
+			//下移
+			aDownBtn[i].onclick = function(){
+				var preIndex = this.index;
+				console.log(preIndex);
+				
+				if(preIndex == positionArr.length-1){//如果遇到点击这里最底部的
+					for(var j=0; j<aItems.length; j++){
+						aItems[j].index = aUpBtn[aItems[j].orgindex].index = aDownBtn[aItems[j].orgindex].index = aItems[j].index+1;
+					}
+					aItems[this.orgindex].index = aUpBtn[this.orgindex].index = this.index =  0;
+				}else{
+					for(var j=0; j<aItems.length; j++){
+						if(aItems[j].index == preIndex+1){
+							aItems[j].index = aUpBtn[j].index = aDownBtn[j].index = preIndex;
+						}
+					}
+					aItems[this.orgindex].index = aUpBtn[this.orgindex].index = this.index =  preIndex+1;
+				}
+				doMove();
+			}
+			
+
+		}
+
+		function doMove(){
+			for(var i=0; i<aItems.length; i++) {
+				//循环将每个dom的位置坐标index ,并进行相应赋值。
+				aItems[i].style.left = positionArr[aItems[i].index].left + "px";
+				aItems[i].style.top = positionArr[aItems[i].index].top + "px";
+			}
+		}
+
+	</script>
+</body></html>

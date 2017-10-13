@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>window对象</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		button{
+			background:#3498db;
+			color:#fff;
+			font-size:14px;
+			text-align:center;
+			width:60px;
+			height:60px;
+			padding:10px;
+			border:none 0;
+			cursor:pointer;
+			position:fixed;
+			right:30px;
+			bottom:30px;
+			display:none
+		}
+		#textsContent{
+			height:3000px;
+		}
+		.colorBlock{
+			height:500px;
+			background:#c0dbff;
+		}
+	</style>
+
+	<script>
+		/*
+			要求：返回顶部按钮开始是隐藏的，当页面向上滚动超出600px时，显示返回顶部按钮，。
+		*/
+
+		window.onload = function(){
+
+			oBtn = document.getElementById("goTop");
+			//设置是否正在运动开关，以让在运动的时候window.onscroll检测时不让按钮显示
+			var onMove = false;
+
+			window.onscroll = function(){
+				//兼容写法，document.documentElement.scrollTop使用火狐（document.body.scrollTop在火狐里返回0），document.body.scrollTop适用其他浏览器
+				if(!onMove && (document.documentElement.scrollTop || document.body.scrollTop > 600)){
+					oBtn.style.display = "block";
+				}
+			}
+
+
+			//返回顶部
+			oBtn.onclick = function(){
+
+				oBtn.style.display = "none";
+				onMove = true;
+
+				var timer = setInterval(function(){
+					window.scrollBy(0,-100);
+					var top = document.documentElement.scrollTop || document.body.scrollTop;
+					if( top <= 0){
+						clearInterval(timer);
+						onMove = false;
+					}
+				},10);
+
+			}
+
+		}
+
+
+	</script>
+
+</head>
+
+<body>
+    <div id="textsContent">
+		<button id="goTop">返回顶部</button>
+        <div class="colorBlock"></div>
+        <div class="colorBlock" style="background:#c0faff"></div>
+        <div class="colorBlock" style="background:#d6ffc0"></div>
+        <div class="colorBlock" style="background:#ffcfe3"></div>
+        <div class="colorBlock" style="background:#fffbcf"></div>
+        <div class="colorBlock" style="background:#c0faff"></div>
+    
+    </div>
+</body>
+
+
+</html>

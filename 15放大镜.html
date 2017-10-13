@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:坐标判断、定位、范围控制-->
+	<title>放大镜</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		font-family:"Microsoft YaHei";
+	}
+	body{
+		background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+		min-height:400px;
+	}
+	.zoom_bigbox{
+		position: relative;
+	}
+	#zoomBox{
+		/*这里写了固定宽高，那么小图片需要做成这么大小的图片，如果不是这个尺寸，可自行修改这里的大小*/
+		width:300px;
+		height:533px;
+		border:1px solid #000;
+		margin:30px 0 0 30px;
+		position:relative;
+		cursor:pointer;
+	}
+	.mask{
+		width:100px;
+		height:100px;
+		background:rgba(255,255,255,0.4);
+		border:1px solid rgba(0,0,0,0.2);
+		position:absolute;
+		top:0;
+		left:0;
+		border-radius: 50%;
+		display: none;
+	}
+	.zoomShow{
+		width:400px;
+		height:400px;
+		position:absolute;
+		top:30px;
+		left:360px;
+		overflow:hidden;
+		border-radius: 50%;
+	}
+	.zoomBorder{
+		position: absolute;
+		left: 0;
+		right: 0;
+		width: 400px;
+		height: 400px;
+		box-shadow:0 0 0 10px rgba(255,255,255,0.3) inset;
+		z-index: 3;
+		border-radius: 50%;
+	}
+	.zoomShow img{
+		position:absolute;
+		top:0;
+		left:0;
+	}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+	<div class="zoom_bigbox">
+		<div id="zoomBox">
+			<img src="img/two_small.jpg" bigSrc="img/two_big.jpg" />
+			<div class="mask"></div>
+		</div>
+		<div class="zoomShow">
+			<img src="img/two_big.jpg" />
+			<div class="zoomBorder"></div>
+		</div>
+	</div>
+
+	<script>
+
+		//预存需要的dom
+		var oDiv=document.getElementById("zoomBox");
+		var oMask = document.getElementsByClassName("mask")[0];
+		var smallImg = oDiv.getElementsByTagName("img")[0];
+		var oShowbox = document.getElementsByClassName("zoomShow")[0];
+		var bigImg = oShowbox.getElementsByTagName("img")[0];
+
+		//设置遮盖层的大小（和传入的图片匹配）
+		bigImg.onload = function(){
+			//只有当图片加载完成，才能获取宽高
+			oMask.style.height = oMask.style.width = oDiv.offsetWidth*oShowbox.offsetWidth/bigImg.offsetWidth + "px";
+			oMask.style.display = "block";//先隐藏后显示，以免调整大小时体验不好。
+		};
+
+		//监测鼠标移动
+		oDiv.addEventListener("mousemove", function(e){
+			e = e || window.event;
+			var left = e.clientX-oDiv.offsetLeft - oMask.offsetWidth/2;
+			//判断是否超出
+			if(left<0){
+				left=0
+			}else if(left>oDiv.offsetWidth-oMask.offsetWidth){
+				left=oDiv.offsetWidth-oMask.offsetWidth
+			}
+
+			var top = e.clientY-oDiv.offsetTop - oMask.offsetHeight/2;
+			if(top<0){
+				top=0
+			}else if(top>oDiv.offsetHeight-oMask.offsetHeight){
+				top=oDiv.offsetHeight-oMask.offsetHeight
+			}
+
+			oMask.style.left = left+"px";
+			oMask.style.top = top+"px";
+
+			bigImg.style.left = -left*(bigImg.offsetWidth/smallImg.offsetWidth) + "px";
+			bigImg.style.top = -top*(bigImg.offsetHeight/smallImg.offsetHeight) + "px";
+
+		});
+
+	</script>
+</body></html>

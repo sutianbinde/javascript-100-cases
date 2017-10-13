@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:轮播图、return使用 -->
+    <title>轮播图</title>
+    <style>
+		*{
+		margin:0;
+		padding:0;
+		}
+		body{
+			user-select:none;
+			-moz-user-select:none;
+			-webkit-user-select:none;
+			background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+			min-height:400px;
+		}
+		.big_box{
+			width:500px;
+			margin:30px auto;
+			background:#000;
+			padding:30px;
+			border-radius:5px;
+			box-shadow:0px 0px 10px #5AB1FD;
+		}
+		.btns{
+			text-align:center;
+		}
+		.btns button{
+			background:#fff;
+			line-height:32px;
+			border:2px solid #5AB1FD;
+			width:80px;
+			font-size:14px;
+			color:#000;
+			outline:none 0;
+			cursor:pointer;
+		}
+		.btns p{
+			color:#fff;
+			padding:10px 0 0 0;
+		}
+        #wrap{
+			width:480px;
+			height:270px;
+			margin:20px auto;
+		}
+		#content{
+			position:relative;
+			width:480px;
+			height:270px;
+		}
+		#content img{
+			position:absolute;
+			top:0;
+			left:0;
+		}
+		.prev, .next{
+			width:28px;
+			height:50px;
+			line-height:50px;
+			background:rgba(0,0,0,0.4);
+			color:#fff;
+			text-align:center;
+			cursor:pointer;
+			border-radius:5px;
+			font-size:20px;
+			position:absolute;
+			top:125px;
+			left:5px;
+			z-index:5;
+		}
+		.next{
+			left:auto;
+			right:5px;
+		}
+		.prev:hover, .next:hover{
+			background:rgba(0,0,0,1);
+		}
+		.dots a{
+			width:20px;
+			height:20px;
+			float:left;
+			background:rgba(0,0,0,0.7);
+			cursor:pointer;
+			border-radius:50%;
+			margin-right:5px;
+		}
+		.dots .now{
+			background:rgba(0,255,0,0.7);
+		}
+		.dots{
+			position:absolute;
+			left:41%;
+			bottom:5px;
+		}
+    </style>
+    
+</head>
+<!-- onselectstart用于防止文字选中 -->
+<body onselectstart="javascript:return false;">
+	<div class="big_box">
+		<div class="btns">
+			<button>循环切换</button>
+			<button style="border-color:#D7D7D7">顺序切换</button>
+			<p>当切换到最后一张后，可继续切换到第一张</p>
+		</div>
+		<div id="wrap">
+			<div id="content">
+				<img src="img/1.jpg" />
+				<img src="img/2.jpg" />
+				<img src="img/3.jpg" />
+				<img src="img/4.jpg" />
+				<div class="prev">&lt;</div>
+				<div class="next">&gt;</div>
+				<div class="dots"><a class="now"></a><a></a><a></a><a></a></div>
+			</div>
+		</div>
+
+	</div>
+	<script>
+		window.onload = function(){
+			//获取dom
+			var btnWrap = document.getElementsByClassName("btns")[0];
+			var aBtns = btnWrap.getElementsByTagName("button");
+			var oP = btnWrap.getElementsByTagName("p")[0];
+
+			var oDiv = document.getElementById("content");
+			var oPrev = oDiv.getElementsByClassName("prev")[0];
+			var oNext = oDiv.getElementsByClassName("next")[0];
+			var aImgs = oDiv.getElementsByTagName("img");
+			var aDots = oDiv.getElementsByTagName("a");
+			var iNow = 0;
+			var timer = null;
+			var loop = true;  //是否可循环切换的标示
+
+			//点击按钮切换模式
+			aBtns[0].onclick = function(){
+				this.style.borderColor = "#5AB1FD";
+				aBtns[1].style.borderColor = "#D7D7D7";
+				oP.innerHTML = "当切换到最后一张后，可继续切换到第一张";
+				loop = true;
+			}
+			aBtns[1].onclick = function(){
+				this.style.borderColor = "#5AB1FD";
+				aBtns[0].style.borderColor = "#D7D7D7";
+				oP.innerHTML = "当切换到最后一张后，不可再向后切换";
+				loop = false;
+			}
+
+
+			//点击下一张
+			oNext.onclick = function(){
+				iNow++;
+				if(iNow>=aDots.length){
+					//当不支持循环切换时，终止切换，并还原iNow
+					if(!loop){
+						iNow--;
+						return false;
+					}
+					iNow=0;
+				}
+				doMove();
+			}
+
+			//点击上一张
+			oPrev.onclick = function(){
+				iNow--;
+				if(iNow<0){
+					if(!loop){
+						iNow++;
+						return false;
+					}
+					iNow=aDots.length-1;
+				}
+				doMove();
+			}
+
+			//点击中间点
+			for(var i=0; i<aDots.length; i++){
+				//首先赋值Index值
+				aDots[i].index = i;
+				aDots[i].onclick = function(){
+					iNow = this.index;
+					doMove();
+				}
+			}
+
+			//轮播图切换函数
+			function doMove(){
+				for(var i=0; i<aImgs.length; i++){
+					if(i==iNow){
+						aImgs[i].style.display = "block";
+						aDots[i].style.background = "rgba(0,255,0,0.7)";
+					}else{
+						aImgs[i].style.display = "none";
+						aDots[i].style.background = "rgba(0,0,0,0.7)";
+					}
+				}
+			}
+
+			//自动轮播
+			function autoMove(){
+				clearInterval(timer);
+				timer = setInterval(function(){
+					iNow++;
+					if(iNow>=aDots.length){
+						if(!loop){
+							iNow--;
+							return false;
+						}
+						iNow=0;
+					}
+					doMove();
+				},1500)
+			}
+			//进入页面时先调用一下自动轮播
+			autoMove();
+
+			//鼠标移入轮播图停止轮播
+			oDiv.onmouseenter = function(){
+				clearInterval(timer);
+			}
+			//鼠标移入移开，重新开启轮播
+			oDiv.onmouseleave = function(){
+				autoMove();
+			}
+		}
+	</script>
+
+</body>
+</html>

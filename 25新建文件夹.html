@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:循环、dom操作-->
+	<title>添加购物车</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+			font-family:"Microsoft YaHei";
+		}
+		body{
+			background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+			min-height:400px;
+			font-size:14px;
+		}
+		.content{
+			width:500px;
+			margin:50px auto;
+			padding: 20px;
+			border-radius: 10px;
+			background: #fff;
+			box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
+			background:#DE4965;
+		}
+		.icon_cont{
+			overflow:hidden;
+		}
+		.dsk_icon{
+			width:96px;
+			height: 83px;
+			border-radius:3px;
+			border:2px solid rgba(255,255,255,0);
+			background:rgba(255,255,255,0);
+			padding:8px 0;
+			transition:background 0.5s ease;
+			float:left;
+			padding:10px;
+			position:relative;
+			margin: 2px;
+		}
+		.dsk_icon:hover{
+			border:2px solid rgba(255,255,255,0.3);
+			background:rgba(255,255,255,0.1);
+			transition:background 0.5s ease;
+		}
+		.dsk_icon .icon{
+			background:url("img/icons.png") 0px -95px no-repeat;
+			width:60px;
+			height:64px;
+			margin:0 auto;
+		}
+		.dsk_icon p{
+			text-align:center;
+			font-size:14px;
+			height: 16px;
+			color:#fff;
+			padding-top:3px;
+		}
+		.dsk_icon.active{
+			background:rgba(255,255,255,0.4);
+			border:2px solid rgba(255,255,255,0.5);
+		}
+		.dsk_icon i{
+			position:absolute;
+			height:14px;
+			width:14px;
+			border:1px solid #d0d9de;
+			border-radius:2px;
+			top:5px;
+			left:5px;
+			display:none;
+			cursor:pointer;
+		}
+		.dsk_icon:hover i{
+			display:block;
+		}
+		.dsk_icon.active i{
+			background:url('img/checkbox_bg.png') #5AB1FD;
+			display:block;
+		}
+		.btns{
+			margin-top:30px;
+		}
+		.btns button{
+			width:120px;
+			line-height:30px;
+			margin-right:10px;
+			background:#5AB1FD;
+			border:1px solid #5AB1FD;
+			color:#fff;
+			border-radius:3px;
+			cursor:pointer;
+		}
+		#template{
+			display:none;
+		}
+
+		
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+	<div class="content">
+		<div class="icon_cont">
+			<div class="dsk_icon">
+				<div class="icon" style="background-position:-96px -95px;"></div>
+				<p class="name">新建文件夹1</p>
+				<i></i>
+			</div>
+			
+			<div class="dsk_icon" id="template">
+				<div class="icon" style="background-position:-96px -95px;"></div>
+				<p class="name">新建文件夹</p>
+				<i></i>
+			</div>
+		</div>
+		<div class="btns">
+			<button class="addBtn">添加文件夹</button>
+			<button class="deleteBtn">删除文件夹</button>
+		</div>
+	</div>
+	<script>
+
+		//预存dom
+		var content = document.getElementsByClassName("icon_cont")[0];
+		var addBtn = document.getElementsByClassName("addBtn")[0];
+		var deleteBtn = document.getElementsByClassName("deleteBtn")[0];
+		var template = document.getElementById("template");
+		var icons = document.getElementsByClassName("dsk_icon");
+		var iNow = 1;
+		
+		
+		//点击复选框选中
+		content.onclick = function(e){
+			if(e.target.nodeName.toLowerCase() == "i"){
+				var icon = e.target.parentNode;
+				icon.className = (icon.className=="dsk_icon")?"dsk_icon active":"dsk_icon";
+			};
+		}
+		
+		//添加按钮
+		addBtn.onclick = function(){
+			var newDom = template.cloneNode(true);
+			newDom.id = "";
+			iNow++;
+			newDom.getElementsByClassName("name")[0].innerHTML = "新建文件"+iNow;
+			content.appendChild(newDom);
+		}
+		
+		//添加按钮
+		deleteBtn.onclick = function(){
+			var selectDom = document.getElementsByClassName("active");
+			var newArr = [];
+			for(var i=0; i<selectDom.length; i++){
+				newArr.push(selectDom[i]);
+			}
+			for(var i=0; i<newArr.length; i++){
+				content.removeChild(newArr[i]);
+			}
+		}
+
+	</script>
+</body></html>

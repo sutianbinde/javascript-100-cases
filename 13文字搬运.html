@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:字符串操作，定时器-->
+	<title>文字搬运工</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		font-family:"Microsoft YaHei";
+	}
+	body{
+		background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+		min-height:400px;
+	}
+	.wrap_box{
+		width:700px;
+		overflow: hidden;
+		margin: 20px auto;
+		background: #5AB1FD;
+		border-radius: 5px;
+		padding: 10px;
+		font-size: 14px;
+	}
+	.wrap_box > *{
+		float: left;
+		margin: 10px;
+
+	}
+	.left textarea , .right{
+		height: 400px;
+		width: 240px;
+		border-radius: 5px;
+		resize: none;
+		background: #fff;
+		border: 2px solid #2d88d7;
+		padding: 7px;
+		line-height: 30px;
+	}
+	.btn{
+		background: #2d88d7;
+		border-radius: 5px;
+		padding: 20px;
+		color: #fff;
+		text-align: center;
+		margin-top: 120px;
+		cursor: pointer;
+	}
+	.btn:hover{
+		background: #227ac7;
+	}
+	.btn span{
+		font-size: 40px;
+		line-height: 30px;
+	}
+	.nomber{
+		text-align: center;
+		padding: 10px;
+	}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+<div class="wrap_box">
+	<div class="left">
+		<textarea class="myInput">希望那些喜欢用"枪打出头鸟"这样的道理教训年轻人，并且因此觉得自己很成熟的中国人有一天能够明白这样一个事实，那就是：有的鸟来到世间，是为了做它该做的事，而不是专门躲枪子儿的。</textarea>
+	</div>
+	<div class="middle">
+		<div class="btn">
+			<span>→</span>
+			<p>把文字右移</p>
+		</div>
+		<p class="nomber">59/59</p>
+	</div>
+	<div class="right">
+
+	</div>
+</div>
+<script>
+	//预存需要的dom
+	var oBtn = document.getElementsByClassName("btn")[0];
+	var oInput = document.getElementsByTagName("textarea")[0];
+	var oContent = document.getElementsByClassName("right")[0];
+	var oNomber = document.getElementsByClassName("nomber")[0];
+	var timer = null;
+
+	//先设定当前文字数量
+	oNomber.innerHTML = "0/"+oInput.value.length;
+
+	//点击移动按钮
+	oBtn.onclick = function(){
+		var str = oInput.value;
+		var iNow = 0;
+
+		//清除定时器，防止重复点击
+		clearInterval(timer);
+		if(!str){
+			return false;
+		}
+
+		timer = setInterval(function(){
+			iNow++;
+			//当移动完成，清除定时器
+			if(iNow>=str.length){
+				clearInterval(timer);
+			}
+
+			//使用字符串操作设置值
+			oContent.innerHTML = str.substring(0,iNow);
+			oInput.value = str.substr(iNow);
+			oNomber.innerHTML = iNow+"/"+str.length
+
+		},30);
+
+	}
+
+	//textarea不支持onchange事件，所以使用onkeyup检测输入
+	oInput.onkeyup = function(){
+		oNomber.innerHTML = "0/"+oInput.value.length;
+	}
+
+	
+</script>
+</body></html>

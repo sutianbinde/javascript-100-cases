@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:正则表达式,阻止事件冒泡-->
+	<title>验证</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		font-family:"Microsoft YaHei";
+	}
+	body{
+		background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+		min-height:400px;
+	}
+	.wrap_box{
+		width:550px;
+		overflow: hidden;
+		margin: 20px auto;
+		background: #5AB1FD;
+		border-radius: 5px;
+		padding: 20px;
+		font-size: 16px;
+	}
+	.item{
+		line-height: 42px;
+		margin-bottom: 20px;
+	}
+	.item label{
+		display: inline-block;
+		color: #fff;
+		width: 100px;
+		text-align: right;
+	}
+	.item input{
+		border: none 0;
+		width: 250px;
+		height: 42px;
+		border-radius: 5px;
+		padding:0 5px;
+	}
+	.item button{
+		width: 70px;
+		background: #333;
+		text-align: center;
+		color: #fff;
+		border: none 0;
+		height: 42px;
+		border-radius: 5px;
+		cursor: pointer;
+		margin-left: 20px;
+	}
+	.item button:hover{
+		background: #000;
+	}
+	.tips{
+		background: #3681c5;
+		border-radius: 5px;
+		padding: 0 10px;
+		color: #fef86b;
+		position: relative;/*
+		display: inline-block;*/
+		margin: 10px 0 0 105px;
+		display: none;
+	}
+	.tips:before{
+		content: "";
+		position: absolute;
+		border: 7px solid transparent;
+		border-bottom: 7px solid #3681c5;
+		left: 19px;
+		top: -14px;
+	}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+<div class="wrap_box">
+	<div class="item">
+		<label for="username">用户名：</label>
+		<input id="username" type="text"/>
+		<button myReg="^[a-zA-z][0-9a-zA-z]{4,}$">检测</button>
+		<br/>
+		<div class="tips" tiptext="请输入长度至少为5的值（以英文字母开始）">
+			请输入长度至少为5的值（以英文字母开始）
+		</div>
+	</div>
+	<div class="item">
+		<label for="qq">QQ号码：</label>
+		<input id="qq" type="text"/>
+		<button myReg="^[1-9][0-9]{4,8}$">检测</button>
+		<br/>
+		<div class="tips" tiptext="请输入5~10位的数字（非零开头）">
+			请输入5~10位的数字（非零开头）
+		</div>
+	</div>
+	<div class="item">
+		<label for="phone">手机号：</label>
+		<input id="phone" type="text"/>
+		<button myReg="^[1][356789][0-9]{9}$">检测</button>
+		<br/>
+		<div class="tips" tiptext="请输入正确的手机号码">
+			请输入正确的手机号码
+		</div>
+	</div>
+	<div class="item">
+		<label for="email">邮箱：</label>
+		<input id="email" type="text"/>
+		<button myReg="^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$">检测</button>
+		<br/>
+		<div class="tips" tiptext="请输入正确的邮箱">
+			请输入正确的邮箱
+		</div>
+	</div>
+</div>
+<script>
+
+	//预存需要的dom
+	var aBtn = document.getElementsByTagName("button");
+	var tips = document.getElementsByClassName("tips");
+
+	//点击文档隐藏提示
+	document.onclick = function(){
+		hideTips();
+	};
+
+	function hideTips(){
+		for(var i=0; i<tips.length; i++){
+			tips[i].style.display = "none";
+		}
+	}
+
+	var reg = /^[1-9][0-9]{4,8}$/;
+
+
+	//绑定点击验证
+	for(var i=0; i<aBtn.length; i++){
+		aBtn[i].onclick = function(e){
+			var item = this.parentNode;
+			var val = item.getElementsByTagName("input")[0].value;
+			var tip = item.getElementsByClassName("tips")[0];
+			//console.log(val,tips);
+
+			hideTips();
+
+			if(val == ""){
+				tip.innerHTML = "不能为空";
+				tip.style.display = "inline-block";
+			}else if( new RegExp(this.getAttribute("myReg")).test(val) ){
+				tip.innerHTML = "恭喜你，验证通过！";
+				tip.style.display = "inline-block";
+			}else{
+				tip.innerHTML = tip.getAttribute("tiptext");
+				tip.style.display = "inline-block";
+			}
+			e.stopPropagation();
+		}
+	}
+
+
+	
+</script>
+</body></html>

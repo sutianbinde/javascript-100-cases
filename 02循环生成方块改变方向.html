@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:dom创建、dom添加、数组、取模% -->
+	<title>方块改变</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+			font-family:"Microsoft YaHei";
+		}
+		body{
+			background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+			min-height:400px;
+		}
+		.wrap_box{
+			width:500px;
+			margin:30px auto;
+			background:#fff;
+			padding:30px;
+			border-radius:5px;
+			box-shadow:0px 0px 10px #5AB1FD;
+		}
+		button{
+			cursor:pointer;
+		}
+		button{
+			background:#fff;
+			line-height:32px;
+			border:2px solid #5AB1FD;
+			width:80px;
+			font-size:14px;
+			color:#5AB1FD;
+			outline:none 0;
+		}
+		button:hover{
+			border:2px solid #DE4965;
+			color:#DE4965;
+		}
+		/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+		.contents{
+			border:2px solid #5AB1FD;
+			margin-top:10px;
+			padding:10px;
+			position:relative;
+			width:250px;
+			height:250px;
+		}
+		.contents div{
+			height:50px;
+			width:50px;
+			line-height:50px;
+			text-align:center;
+			background:#5AB1FD;
+			color:#fff;
+			position:absolute;
+			border-radius:2px;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap_box">
+
+		<div class="btns">
+			<button id="myBtn">生成</button>
+		</div>
+
+		<div class="contents">
+
+		</div>
+
+	</div>
+	<script>
+		//预存需要的dom
+		var oBtn = document.getElementById("myBtn");
+		var oBox = document.getElementsByClassName("contents")[0];
+		var aDiv = [];
+		var nowIndex = 0;
+
+		//位置数据
+		var moveArr = [
+			[[0,0],[50,50],[100,100],[50,150],[0,200]],
+			[[0,0],[50,50],[100,100],[150,50],[200,0]],
+			[[200,0],[150,50],[100,100],[150,150],[200,200]],
+			[[0,200],[50,150],[100,100],[150,150],[200,200]]
+		];
+
+		//点击切换
+		oBtn.onclick = function(){
+			if(aDiv.length == 0){
+				for(var i=1; i<6; i++){
+					//创建dom
+					var oDiv = document.createElement("div");
+					oDiv.innerHTML = i;
+					oDiv.style.cssText = "left:"+ (50*(i-1)+10) +"px;top:"+ (50*(i-1)+10) +"px;";
+					aDiv.push(oDiv);
+					//放入页面
+					oBox.appendChild(oDiv);
+				}
+				oBtn.innerText = "改变";
+			}else{
+
+				for(var i=0; i<aDiv.length; i++){
+					var arrIndex = nowIndex%4;
+					aDiv[i].style.cssText = "left:"+ (moveArr[arrIndex][i][0]+10) +"px;top:"+ (moveArr[arrIndex][i][1]+10) +"px;";
+
+				}
+				nowIndex++;
+
+			}
+
+		}
+
+	</script>
+</body></html>

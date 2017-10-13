@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:阻止默认事件，位置坐标判断，事件监听-->
+	<title>右键菜单</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		font-family:"Microsoft YaHei";
+	}
+	body{
+		background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+		min-height:400px;
+	}
+	ul li{
+		list-style: none;
+	}
+	.context_menu{
+		width: 250px;
+		position: fixed;
+		left: 0;
+		top: 0;
+		z-index: 100;
+		border: 1px solid #bababa;
+		background: #fff;
+		box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+		font-size: 13px;
+		display: none;
+	}
+	.context_menu .group{
+		border-top: 1px solid #e9e9e9;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+	.context_menu li{
+		padding: 4px 25px;
+	}
+	.context_menu li:hover{
+		background:#e6edf6;
+	}
+	.context_menu span{
+		float: right;
+		color:#a1a192;
+	}
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+	<!-- 右键菜单 -->
+	<div class="context_menu">
+		<ul class="group">
+			<li><span>Ctrl+V</span>查看大图标(V)</li>
+			<li><span>→</span>排序方式</li>
+			<li class="refresh"><span>Ctrl+E</span>刷新(E)</li>
+		</ul>
+		<ul class="group">
+			<li class="close"><span>Ctrl+D</span>关闭(D)</li>
+		</ul>
+		<ul class="group">
+			<li><span>Ctrl+C</span>复制(C)</li>
+			<li><span>Ctrl+X</span>剪切(X)</li>
+			<li><span>Ctrl+V</span>粘贴(V)</li>
+		</ul>
+		<ul class="group">
+			<li class="newFile"><span>Ctrl+Shift+E</span>新建文件夹(N)</li>
+		</ul>
+		<ul class="group">
+			<li><span></span>创建快捷方式</li>
+			<li><span>Ctrl+O</span>删除(O)</li>
+			<li class="rename"><span>Ctrl+E</span>重命名(E)</li>
+		</ul>
+		<ul class="group">
+			<li><span></span>属性</li>
+		</ul>
+	</div>
+<script>
+
+	//预存dom
+	var menu = document.getElementsByClassName("context_menu")[0];
+
+	//隐藏菜单
+	document.addEventListener("click",function(e){
+		menu.style.display = "none";
+	});
+	//右键菜单
+	document.addEventListener("contextmenu",function(e){
+		//获取位置
+		var L = e.pageX;
+		var T = e.pageY;
+		var menuW = menu.offsetWidth;
+		var menuH = menu.offsetHeight;
+		var menuL = menu.offsetLeft;
+		var menuT = menu.offsetTop;
+		var winW  = window.innerWidth;
+		var winH  = window.innerHeight;
+		if(L>winW-menuW){
+			L = L - menuW;
+		}
+		if(T>winH-menuH){
+			if(T<menuH){
+				T = winH-menuH;
+			}else{
+				T = T - menuH;
+			}
+		}
+
+		menu.style.left = L+"px";
+		menu.style.top = T+"px";
+		menu.style.display = "block";
+
+		//阻止默认事件（不显示默认的右键菜单）
+		e.preventDefault();
+	});
+
+	
+</script>
+</body></html>

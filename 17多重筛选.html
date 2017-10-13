@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<!-- 知识点:事件委托，判断重复，class操作-->
+	<title>多重筛选</title>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		font-family:"Microsoft YaHei";
+	}
+	body{
+		background:linear-gradient(#A1E6E9 0%,#fff 100%) no-repeat;
+		min-height:400px;
+	}
+	a{
+		cursor: pointer;
+	}
+	.wrap_box{
+		width:700px;
+		overflow: hidden;
+		margin: 20px auto;
+		background: rgba(255,255,255,0.7);
+		font-size: 14px;
+		box-shadow:0 0 3px rgba(0,0,0,0.2)
+	}
+	.header{
+		background: #c8f0ed;
+		padding: 13px 20px 8px;
+	}
+	.header span{
+		float: left;
+		margin-top: 3px;
+	}
+	.select-content{
+		margin-left: 60px;
+		overflow: hidden;
+		min-height: 30px;
+	}
+	.select-item{
+		float: left;
+		border: 1px solid #1295b9;
+		padding: 2px 5px;
+		position: relative;
+		padding-right:25px;
+		color: #1295b9;
+		margin: 0 5px 5px;
+	}
+	.select-item a{
+		position: absolute;
+		top: 2px;
+		right: 2px;
+		width: 18px;
+		height: 18px;
+		line-height: 18px;
+		background: #1295b9;
+		text-align: center;
+		font-size: 16px;
+		color: #fff;
+	}
+
+	.content{
+		padding: 20px 20px
+	}
+	.list{
+		border-bottom: 1px dashed #c8f0ed;
+		line-height: 40px;
+	}
+	.list span{
+		color: #6e7272;
+	}
+	.list a{
+		margin-left: 20px;
+	}
+	.list .active{
+		color: #009ac4;
+	}
+
+
+	/*灰色D7D7D7  蓝色5AB1FD 粉红DE4965*/
+	</style>
+</head>
+<body>
+<div class="wrap_box">
+	<div class="header">
+		<span>你的选择:</span>
+		<div class="select-content">
+			<!--<div class="select-item">苹果<a>&times;</a></div>
+			<div class="select-item">苹果<a>&times;</a></div>-->
+		</div>
+
+	</div>
+
+	<div class="content">
+		<div class="list multiple">
+			<span>品牌:</span>
+			<a id="item_1">华为</a>
+			<a id="item_2">小米</a>
+			<a id="item_3">苹果</a>
+			<a id="item_4">魅族</a>
+			<a id="item_5">三星</a>
+			<a id="item_6">乐视</a>
+			<a id="item_7">oppo</a>
+			<a id="item_8">vivo</a>
+			<a id="item_9">诺基亚</a>
+			<a id="item_10">中兴</a>
+		</div>
+		<div class="list">
+			<span>价格:</span>
+			<a id="item_11">0-499</a>
+			<a id="item_12">500-999</a>
+			<a id="item_13">1000-1699</a>
+			<a id="item_14">1700-2799</a>
+			<a id="item_15">2800-4999</a>
+			<a id="item_16">5000以上</a>
+		</div>
+		<div class="list">
+			<span>尺寸:</span>
+			<a id="item_17">5.6英寸及以上</a>
+			<a id="item_18">5.5-5.1英寸</a>
+			<a id="item_19">5.0-4.6英寸</a>
+			<a id="item_20">4.5-4.6英寸</a>
+			<a id="item_21">其他</a>
+		</div>
+		<div class="list">
+			<span>网路:</span>
+			<a id="item_22">移动4G</a>
+			<a id="item_23">联通4G</a>
+			<a id="item_24">电信4G</a>
+			<a id="item_25">全网通</a>
+			<a id="item_26">双卡</a>
+		</div>
+	</div>
+</div>
+<script>
+	//预存需要的dom
+	var oHeader = document.getElementsByClassName("select-content")[0];
+	var aItems = document.getElementsByClassName("content")[0].getElementsByTagName("a");
+
+	console.log(oHeader, aItems);
+
+	//循环绑定点击事件
+	for(var i=0; i<aItems.length; i++){
+		aItems[i].onclick = function(){
+			//如果已选，就不作操作
+			if(  document.getElementById( "selectItem_"+this.id.substr(5))  ){
+				return false;
+			}
+
+			//判断点击的是多选的还是单选的
+			if(this.parentNode.className == "list multiple"){ //可选多个品牌
+
+			}else{
+				var siblingNodes = this.parentNode.children;
+				for(var j=0; j<siblingNodes.length; j++){
+					//如果选中，就清除
+					if(siblingNodes[j].className == "active"){
+						var itemId = siblingNodes[j].id.substr(5);
+
+						siblingNodes[j].className = "";
+						//去掉已选
+						var childNode = document.getElementById("selectItem_"+itemId);
+						childNode.parentNode.removeChild(childNode);
+					}
+
+				}
+			}
+
+			//将新点击的选项添加到已选中（创建新的dom）
+			this.className = "active";
+			var newDom = document.createElement("div");
+			var deletBtn = document.createElement("a");
+			deletBtn.innerHTML = "&times;";
+			newDom.className = "select-item";
+			newDom.innerHTML = this.innerHTML;
+			newDom.setAttribute("id","selectItem_"+this.getAttribute("id").substr(5));
+			newDom.appendChild(deletBtn);
+			oHeader.appendChild(newDom);
+
+			//给选中项绑定删除事件
+			deletBtn.onclick = function(){
+				var childNode = this.parentNode;
+				var itemId = childNode.getAttribute("id").substr(11);
+				childNode.parentNode.removeChild(childNode);
+
+				//去除选中颜色
+				document.getElementById("item_"+itemId).className = "";
+			}
+		}
+	}
+
+
+
+	
+</script>
+</body></html>
